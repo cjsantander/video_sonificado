@@ -16,7 +16,7 @@ padding = 21
 path = 'images'
 
     
-for name in glob.glob("*.tif")[1:]:
+for name in glob.glob("*.tif")[:]:
     # Creating images path
     if not os.path.exists(path):
         os.mkdir(path)
