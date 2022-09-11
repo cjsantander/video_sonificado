@@ -2,6 +2,7 @@ from moviepy.editor import concatenate_videoclips, AudioFileClip, ImageSequenceC
 from PIL import Image
 from tqdm import tqdm
 import matplotlib.pyplot as plt
+import matplotlib
 import numpy as np
 import argparse
 import shutil
@@ -10,12 +11,18 @@ import cv2
 import os
 
 
-parser = argparse.ArgumentParser(description='Crear video a partir de la imagen y audio.')
-parser.add_argument('imagen', type=str, help='Imagen usada en la sonificación.')
-parser.add_argument('audio', type=str, help='Audio obtenido en la sonificación.')
-parser.add_argument('--color', type=str, default='white', help='Color de la curva.')
-parser.add_argument('--dpi', type=int, default=100, help='Resolución del video.')
-parser.add_argument('--nombre', type=str, default="video.mp4", help='Nombre del video.')
+parser = argparse.ArgumentParser(
+    description='Crear video a partir de la imagen y audio.')
+parser.add_argument('imagen', type=str,
+                    help='Imagen usada en la sonificación.')
+parser.add_argument('audio', type=str,
+                    help='Audio obtenido en la sonificación.')
+parser.add_argument('--color', type=str, default='white',
+                    help='Color de la curva.')
+parser.add_argument('--dpi', type=int, default=100,
+                    help='Resolución del video.')
+parser.add_argument('--nombre', type=str,
+                    default="video.mp4", help='Nombre del video.')
 
 args = parser.parse_args()
 name = args.imagen
@@ -30,7 +37,7 @@ path = '__tmp_images__'
 
 if not os.path.exists(path):
     os.mkdir(path)
-    
+
 padding = 21
 
 image = np.asarray(Image.open(name))[::-1, :, :]
@@ -47,6 +54,7 @@ x = np.arange(0, width)
 images = []
 
 # Generación de los frames
+matplotlib.use('TkAgg')
 fig, ax = plt.subplots(dpi=dpi)
 fig.patch.set_facecolor('xkcd:black')
 ax.imshow(canvas, origin='lower')
@@ -57,12 +65,13 @@ for i in tqdm(range(height)):
     y = 20 * y + i / scale + padding
     curve = ax.plot(x, y, color=color)
     fig.canvas.draw()
+
     curve.pop(0).remove()
 
     buf = fig.canvas.tostring_rgb()
     ncols, nrows = fig.canvas.get_width_height()
     arr = np.fromstring(buf, dtype=np.uint8).reshape(nrows, ncols, 3)
-    
+
     image_file = f"{path}/{str(i).zfill(4)}.png"
     images.append(image_file)
     cv2.imwrite(image_file, cv2.cvtColor(arr, cv2.COLOR_RGB2BGR))
@@ -76,7 +85,8 @@ first = first.set_duration(0.41)
 last = ImageClip(images[-1])
 last = last.set_duration(0.57)
 
-sequence = ImageSequenceClip(images, fps=len(images) / (audioclip.duration - 0.41 - 0.57))
+sequence = ImageSequenceClip(images, fps=len(
+    images) / (audioclip.duration - 0.41 - 0.57))
 
 clip = concatenate_videoclips([first, sequence, last]).set_audio(audioclip)
 
