@@ -18,4 +18,4 @@ python -m pip install -r requirements.txt
 Para utilizar el script con una imagen `img` y un audio `mp3`
 ```Shell
 python graphic.py img mp3
-``
+```
