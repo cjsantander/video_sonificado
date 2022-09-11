@@ -2,12 +2,7 @@
 Script para generar un video a partir de una imagen y un audio de la sonificación
 
 ## Requerimientos
-Para utilizar el script son necesarios algunos módulos, los cuales pueden ser instalados utilizando conda:
-```Shell
-conda install --file requirements.txt
-```
-
-o bien pip:
+Para utilizar el script son necesarios algunos módulos, los cuales pueden ser instalados utilizando pip:
 ```Shell
 python -m pip install -r requirements.txt
 ```
