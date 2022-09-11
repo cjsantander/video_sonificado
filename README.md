@@ -4,7 +4,8 @@ Script para generar un video a partir de una imagen y un audio de la sonificaci√
 ## Requerimientos
 Para utilizar el script son necesarios algunos m√≥dulos, los cuales pueden ser instalados utilizando conda:
 ```Shell
-conda install --file requirements.txt```
+conda install --file requirements.txt
+```
 
 o bien pip:
 ```Shell
