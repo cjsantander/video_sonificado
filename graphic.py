@@ -15,12 +15,14 @@ parser.add_argument('imagen', type=str, help='Imagen usada en la sonificación.'
 parser.add_argument('audio', type=str, help='Audio obtenido en la sonificación.')
 parser.add_argument('--color', type=str, default='white', help='Color de la curva.')
 parser.add_argument('--dpi', type=int, default=100, help='Resolución del video.')
+parser.add_argument('--nombre', type=str, default="video.mp4", help='Nombre del video.')
 
 args = parser.parse_args()
 name = args.imagen
 mp3_audio = args.audio
 color = args.color
 dpi = args.dpi
+nombre = args.nombre
 
 
 # Carpeta donde se guardarán los archivos
@@ -78,6 +80,7 @@ sequence = ImageSequenceClip(images, fps=len(images) / (audioclip.duration - 0.4
 
 clip = concatenate_videoclips([first, sequence, last]).set_audio(audioclip)
 
-name = mp3_audio.replace("mp3", "mp4")
-clip.write_videofile(name)
+if "mp4" not in nombre:
+    nombre += ".mp4"
+clip.write_videofile(nombre)
 shutil.rmtree(path)
